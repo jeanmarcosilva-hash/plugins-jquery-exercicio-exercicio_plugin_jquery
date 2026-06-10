@@ -1,42 +1,45 @@
-$('#telefone').mascara('(00) 00000-0000', {
-    placeholder: '(DDD) 12345-6789'
-})
+$(document).ready(function() {
+    // Aplicação das máscaras
+    $('#telefone').mask('(00) 00000-0000');
+    $('#cpf').mask('000.000.000-00', {reverse: true});
+    $('#cep').mask('00000-000');
 
-$('#cpf').mascara('000.000.000-00', {
-    placeholder: '123.456.789-00'
-})
-
-$('#cep').mascara('00000-000', {
-    placeholder: '012345-678'
-})
-
-$('form').validate({
-    rules: {
-        nome: {
-            requerido: true
+    // Configuração da validação do formulário
+    $('#form').validate({
+        rules: {
+            nome: {
+                required: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            telefone: {
+                required: true
+            },
+            cpf: {
+                required: true
+            },
+            endereco: {
+                required: true
+            },
+            cep: {
+                required: true
+            }
         },
-        email: {
-            requerido: true,
-            email: true
+        messages: {
+            nome: "Por favor, insira seu nome completo",
+            // As outras mensagens serão traduzidas pelo arquivo messages_pt_BR.min.js
         },
-        telefone: {
-            requerido: true
+        submitHandler: function(form) {
+            alert("Sua requisição foi enviada para análise!");
+            form.reset(); // Limpa o formulário após o envio
         },
-        endereco: {
-            requerido: true
-        },
-        cep: {
-            requerido: true
-        },
-        cpf: {
-            requerido: true
-        },
-    },
-    submitHandler: function (form) {
-        alert("Sua requisição foi enviada para análise, parabéns pela aquisição!");
-        form.reset();
-    },
-    invalidHandler: function (form, validator) {
-        alert("Por favor, preencha os campos para prosseguir com a compra!");
-    }
-})
+        invalidHandler: function(evento, validador) {
+            let camposIncorretos = validador.numberOfInvalids();
+            if (camposIncorretos) {
+                alert(`Existem ${camposIncorretos} campos incorretos ou vazios!`);
+            }
+        }
+    });
+});
